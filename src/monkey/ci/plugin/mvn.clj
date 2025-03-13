@@ -2,7 +2,7 @@
   "Provides MonkeyCI jobs for running maven in build scripts"
   (:require [monkey.ci.build.v2 :as m]))
 
-(def default-img "docker.io/3.9.9-eclipse-temurin-23-alpine")
+(def default-img "docker.io/maven/3.9.9-eclipse-temurin-23-alpine")
 
 (defn mvn
   "Creates mvn container job, with default image that executes the specified command"
