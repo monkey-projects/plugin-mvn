@@ -1,0 +1,15 @@
+{:deps {com.monkeyci/app {:mvn/version "0.16.1"}}
+
+ :aliases
+ {:test
+  ;; clj -X:test
+  {:extra-deps {com.monkeyprojects/build {:mvn/version "0.3.1"}}
+   :exec-fn monkey.test/all}
+
+  :junit
+  ;; clj -X:test:junit
+  {:exec-fn monkey.test/junit}
+
+  :jar
+  ;; clj -X:jar
+  {:exec-fn monkey.build/jar}}}
