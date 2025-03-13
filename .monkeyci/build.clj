@@ -3,5 +3,6 @@
              [clj :as clj]
              [github :as gh]]))
 
-[(clj/deps-library)
- (gh/release-job {:dependencies ["publish"]})]
+(def jobs
+  [(clj/deps-library)
+   (gh/release-job {:dependencies ["publish"]})])
