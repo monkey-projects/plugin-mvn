@@ -16,5 +16,7 @@
 (defn verify
   "Creates `mvn verify` job, with default id `verify`"
   [& [id]]
-  (mvn {:job-id (or id "verify")
-        :cmd "verify"}))
+  (-> (mvn {:job-id (or id "verify")
+            :cmd "verify"})
+      (m/save-artifacts [(m/artifact "surefire-reports"
+                                     "target/surefire-reports/")])))

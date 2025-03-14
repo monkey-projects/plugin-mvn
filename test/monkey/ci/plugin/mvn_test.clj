@@ -29,4 +29,8 @@
   (testing "has default id"
     (is (= "verify"
            (-> (sut/verify)
-               (m/job-id))))))
+               (m/job-id)))))
+
+  (testing "saves surefire reports as artifact"
+    (let [a (:save-artifacts (sut/verify))]
+      (is (= 1 (count a))))))
