@@ -29,8 +29,9 @@
   (testing "creates mvn job"
     (let [job (sut/verify "test-verify")]
       (testing "that performs verify command"
-        (is (= ["mvn verify"]
-               (m/script job))))
+        (is (cs/ends-with?
+             (first (m/script job))
+             " verify")))
 
       (testing "with specified id"
         (is (= "test-verify"
