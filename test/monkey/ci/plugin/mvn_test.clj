@@ -23,7 +23,7 @@
                             :caches
                             (map :id)
                             (set))
-                       "m2-cache"))))))
+                       "mvn:m2-cache"))))))
 
 (deftest verify
   (testing "creates mvn job"

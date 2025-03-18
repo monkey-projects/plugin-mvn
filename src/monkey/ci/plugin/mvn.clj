@@ -17,7 +17,7 @@
   (-> (m/container-job job-id)
       (m/image default-img)
       (m/script [(format "mvn -Dmaven.repo.local=%s %s" m2-cache cmd)])
-      (m/caches [(m/cache "m2-cache" m2-cache)])))
+      (m/caches [(m/cache "mvn:m2-cache" m2-cache)])))
 
 (defn verify
   "Creates `mvn verify` job, with default id `verify`"
