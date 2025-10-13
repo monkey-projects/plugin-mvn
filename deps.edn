@@ -1,9 +1,10 @@
-{:deps {com.monkeyci/app {:mvn/version "0.16.1"}}
+{:deps {com.monkeyci/app {:mvn/version "0.20.5"}}
 
  :aliases
  {:test
   ;; clj -X:test
-  {:extra-deps {com.monkeyprojects/build {:mvn/version "0.3.1"}}
+  {:extra-deps {com.monkeyprojects/build {:mvn/version "0.3.1"}
+                com.monkeyci/test {:mvn/version "0.20.5"}}
    :exec-fn monkey.test/all}
 
   :junit
