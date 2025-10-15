@@ -1,6 +1,7 @@
 (ns monkey.ci.plugin.mvn
   "Provides MonkeyCI jobs for running maven in build scripts"
-  (:require [monkey.ci.api :as m]))
+  (:require [clojure.string :as cs]
+            [monkey.ci.api :as m]))
 
 (def default-img "docker.io/maven:3.9.9-eclipse-temurin-23-alpine")
 
@@ -13,15 +14,32 @@
 (def default-verify-job-id "mvn-verify")
 (def default-deploy-job-id "mvn-deploy")
 
+(defn- cache-opt [dir]
+  (str "-Dmaven.repo.local=" dir))
+
+(defn- add-cache-opt [opts m2-cache]
+  (cond-> (or opts [])
+    m2-cache (concat [(cache-opt m2-cache)])))
+
+(defn format-cmd
+  "Formats the command line for maven with given goals and additional options"
+  [{:keys [goals opts m2-cache]
+    :or {m2-cache default-m2-cache}}]
+  (->> (concat ["mvn"] (add-cache-opt opts m2-cache) goals)
+       (cs/join " ")))
+
 (defn mvn
-  "Creates mvn container job, with default image that executes the specified command"
+  "Creates mvn container job, with default image that executes the specified command
+   with any additional options and args."
   [{:keys [job-id cmd m2-cache]
     :or {job-id "mvn"
          m2-cache default-m2-cache}
     :as conf}]
   (-> (m/container-job job-id)
       (m/image default-img)
-      (m/script [(format "mvn -Dmaven.repo.local=%s %s" m2-cache cmd)])
+      (m/script [(if cmd
+                   (format "mvn %s %s" (cache-opt m2-cache) cmd)
+                   (format-cmd conf))])
       (m/caches [(m/cache "mvn:m2-cache" m2-cache)])))
 
 (def surefire-reports (m/artifact "surefire-reports"

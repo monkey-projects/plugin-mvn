@@ -32,6 +32,21 @@ repository, which speeds up the process significantly.  But since a some of the
 Maven commands are used very frequently, I've added them as separate functions:
 `test`, `verify`, `install`, `deploy`,...  Read on for more!
 
+You can also specify multiple goals and options in a more structured manner to
+the `mvn` function:
+
+```clojure
+(mvn/mvn {:job-id "verify"
+          :goals ["verify"]
+	  :opts ["--threads=10"]
+	  :m2-cache "my-cache"})
+```
+The above will construct a command line that looks like this:
+
+```shell
+$ mvn --threads=10 -Dmaven.repo.local=my-cache verify
+```
+
 ## Available Jobs
 
 A number of functions have been defined that make it easier to run some common

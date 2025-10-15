@@ -24,7 +24,21 @@
                             :caches
                             (map :id)
                             (set))
-                       "mvn:m2-cache"))))))
+                       "mvn:m2-cache")))))
+
+  (testing "with goals"
+    (testing "invokes maven with goals"
+      (is (re-matches #"^mvn .* verify$"
+                      (->> (sut/mvn {:goals ["verify"]})
+                           (m/script)
+                           first))))
+
+    (testing "passes options to maven"
+      (is (re-matches #"^mvn -T 10 .* verify$"
+                      (->> (sut/mvn {:goals ["verify"]
+                                     :opts ["-T 10"]})
+                           (m/script)
+                           first))))))
 
 (deftest verify-job
   (testing "creates mvn job"
