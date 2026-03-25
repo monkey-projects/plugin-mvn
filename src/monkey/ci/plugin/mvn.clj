@@ -71,14 +71,13 @@
   [& [{:keys [verify-job-id
               job-id
               dir]
-       :or {verify-job-id default-verify-job-id
-            job-id default-deploy-job-id}
+       :or {verify-job-id default-verify-job-id}
        :as conf}]]
   (fn [ctx]
     ;; TODO settings.xml from params for deployment credentials
     (when (or (m/main-branch? ctx)
               (release? ctx conf))
-      (cond-> (mvn {:job-id job-id
+      (cond-> (mvn {:job-id (or job-id default-deploy-job-id)
                     :cmd "deploy:deploy"})
         true (m/depends-on verify-job-id)
         dir (m/work-dir dir)))))

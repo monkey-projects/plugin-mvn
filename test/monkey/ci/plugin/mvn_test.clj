@@ -134,6 +134,14 @@
       (testing "creates verify and deploy jobs"
         (is (= 2 (count jobs))))))
 
+  (testing "assigns default deploy job id"
+    (is (= sut/default-deploy-job-id
+           (-> ((sut/lib)
+                (-> mt/test-ctx
+                    (mt/with-git-ref "refs/heads/main")))
+               (last)
+               (m/job-id)))))
+
   (testing "can override job ids"
     (let [jobs ((sut/lib {:verify-job-id "test"
                           :deploy-job-id "deploy"})
