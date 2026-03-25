@@ -140,4 +140,11 @@
                 (-> mt/test-ctx
                     (mt/with-git-ref "refs/heads/main")))]
       (is (= ["test" "deploy"]
-             (map m/job-id jobs))))))
+             (map m/job-id jobs)))))
+
+  (testing "can configure work dir"
+    (let [jobs ((sut/lib {:dir "subdir"})
+                (-> mt/test-ctx
+                    (mt/with-git-ref "refs/heads/main")))]
+      (is (every? (comp (partial = "subdir") m/work-dir)
+                  jobs)))))

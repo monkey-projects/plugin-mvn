@@ -38,8 +38,8 @@ the `mvn` function:
 ```clojure
 (mvn/mvn {:job-id "verify"
           :goals ["verify"]
-	  :opts ["--threads=10"]
-	  :m2-cache "my-cache"})
+          :opts ["--threads=10"]
+          :m2-cache "my-cache"})
 ```
 The above will construct a command line that looks like this:
 
@@ -59,7 +59,7 @@ to just call `mvn` directly.
 |---|---|---|
 |`verify`|`mvn verify`|`id`, defaults to `mvn-verify`|
 |`test`|`mvn test`|`id`, defaults to `mvn-test`|
-|`deploy`|`mvn deploy:deploy`|`verify-job-id`, `job-id`|
+|`deploy`|`mvn deploy:deploy`|`verify-job-id`, `job-id`, `dir`|
 |`lib`|`mvn verify && mvn deploy:deploy`|Same as `deploy`|
 
 More will be added later.

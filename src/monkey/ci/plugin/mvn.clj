@@ -69,7 +69,8 @@
 (defn deploy
   "When on main branch, creates a `mvn deploy:deploy` job"
   [& [{:keys [verify-job-id
-              job-id]
+              job-id
+              dir]
        :or {verify-job-id default-verify-job-id
             job-id default-deploy-job-id}
        :as conf}]]
@@ -77,16 +78,18 @@
     ;; TODO settings.xml from params for deployment credentials
     (when (or (m/main-branch? ctx)
               (release? ctx conf))
-      (-> (mvn {:job-id job-id
-                :cmd "deploy:deploy"})
-          (m/depends-on verify-job-id)))))
+      (cond-> (mvn {:job-id job-id
+                    :cmd "deploy:deploy"})
+        true (m/depends-on verify-job-id)
+        dir (m/work-dir dir)))))
 
 (defn lib
   "Generates jobs for verifying and publishing a maven-based library, that will only
    publish when built from the main branch."
-  [& [conf]]
+  [& [{:keys [dir] :as conf}]]
   (fn [ctx]
-    (->> [(verify (:verify-job-id conf))
+    (->> [(cond-> (verify (:verify-job-id conf))
+            dir (m/work-dir dir))
           ((-> conf
                (assoc :job-id (:deploy-job-id conf))
                (deploy))
